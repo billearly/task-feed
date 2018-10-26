@@ -23,7 +23,11 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    writeTask(title: String, reason: String): Task
+    writeTask(
+      title: String
+      bridge: String
+      reason: String
+    ): Task
   }
 `;
 

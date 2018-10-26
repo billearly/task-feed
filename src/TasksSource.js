@@ -27,7 +27,19 @@ module.exports = {
     },
 
     writeTask: async (task) => {
-        const insertedTask = await tasksCollection.insertOne(task);
+        const creationDate = new Date();
+
+        const newTask = {
+            title: task.title,
+            bridge: task.bridge,
+            reason: task.reason,
+            isComplete: false,
+            creationDate: creationDate,
+            updateDate: creationDate,
+            completionDate: null
+        };
+
+        const insertedTask = await tasksCollection.insertOne(newTask);
         return insertedTask.insertedId;
     }
 }
