@@ -1,10 +1,10 @@
 const { MongoClient, ObjectId } = require('mongodb');
-const { mongoUrl } = require('./mongoConfig');
+const { mongoURL } = require('./connectionString');
 
 let db;
 let tasksCollection;
 
-MongoClient.connect(mongoUrl, { useNewUrlParser: true }, (err, client) => {
+MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
   if (err) {
     throw err;
   }
