@@ -1,3 +1,5 @@
+const port = parseInt(process.env.PORT, 10) || 4000;
+
 const { ApolloServer, gql } = require('apollo-server');
 const { 
   getTasks,
@@ -50,6 +52,6 @@ const resolvers = {
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
-server.listen().then(({ url }) => {
+server.listen({ port: port }).then(({ url }) => {
   console.log(`Server ready at ${url}`);
 });
