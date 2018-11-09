@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development node index",
     "start": "cross-env NODE_ENV=production node index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env echo \"No tests\""
   },
   "engines": {
     "node": "8.11.2"
