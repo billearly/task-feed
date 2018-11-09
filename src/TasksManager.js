@@ -1,7 +1,9 @@
+const { ApolloError } = require('apollo-server');
 const { 
     getTasks,
     getTask,
-    writeTask 
+    writeTask,
+    deleteTask
 } = require('./TasksSource');
 
 module.exports = {
@@ -19,6 +21,18 @@ module.exports = {
         const newTaskId = await writeTask(task);
         const newTask = await getTask(newTaskId);
         return objectIdToString(newTask);
+    },
+
+    deleteTask: async (task) => {
+        const deletionCount = await deleteTask(task);
+
+        if (deletionCount !== 1) {
+            throw new ApolloError('Task not deleted');
+        }
+
+        return {
+            _id: task._id
+        };
     }
 }
 

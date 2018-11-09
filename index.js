@@ -4,7 +4,8 @@ const { ApolloServer, gql } = require('apollo-server');
 const { 
   getTasks,
   getTask,
-  writeTask
+  writeTask,
+  deleteTask
 } = require('./src/TasksManager');
 
 const typeDefs = gql`
@@ -19,6 +20,10 @@ const typeDefs = gql`
     completionDate: String
   }
 
+  type DeletionResult {
+    _id: String
+  }
+
   type Query {
     tasks: [Task]
     task(_id: String): Task
@@ -30,6 +35,10 @@ const typeDefs = gql`
       bridge: String
       reason: String
     ): Task
+
+    deleteTask(
+      _id: String
+    ): DeletionResult
   }
 `;
 
@@ -46,6 +55,9 @@ const resolvers = {
   Mutation: {
     writeTask: async (root, args, context, info) => {
       return await writeTask(args);
+    },
+    deleteTask: async (root, args, content, info) => {
+      return await deleteTask(args);
     }
   }
 };

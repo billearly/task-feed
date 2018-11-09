@@ -41,5 +41,13 @@ module.exports = {
 
         const insertedTask = await tasksCollection.insertOne(newTask);
         return insertedTask.insertedId;
+    },
+
+    deleteTask: async (task) => {
+        const deletion = await tasksCollection.deleteOne({
+            _id: ObjectId(task._id)
+        });
+
+        return deletion.deletedCount;
     }
 }
