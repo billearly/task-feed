@@ -3,6 +3,7 @@ const { mongoURL } = require('./connectionString');
 
 let db;
 let tasksCollection;
+let accountCollection;
 
 MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
   if (err) {
@@ -11,13 +12,18 @@ MongoClient.connect(mongoURL, { useNewUrlParser: true }, (err, client) => {
 
   db = client.db('Task');
   tasksCollection = db.collection('Tasks');
+  accountCollection = db.collection('Accounts');
 });
 
 module.exports = {
-    getTasks: async () => {
-        // connect, get the data, then close?
-        // look into mongoose
-        return await tasksCollection.find({}).toArray();
+    getAccount: async (_id) => {
+        return await accountCollection.findOne({
+            _id: ObjectId(_id)
+        });
+    },
+
+    getTasksForUser: async (userId) => {
+        return await tasksCollection.find({ userId }).toArray();
     },
 
     getTask: async (_id) => {

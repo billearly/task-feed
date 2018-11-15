@@ -2,13 +2,20 @@ const port = parseInt(process.env.PORT, 10) || 4000;
 
 const { ApolloServer, gql } = require('apollo-server');
 const { 
-  getTasks,
+  getAccount,
+  getTasksForUser,
   getTask,
   writeTask,
   deleteTask
 } = require('./src/TasksManager');
 
 const typeDefs = gql`
+  type Account {
+    _id: ID,
+    email: String,
+    tasks: [Task]
+  }
+
   type Task {
     _id: ID
     title: String
@@ -18,6 +25,7 @@ const typeDefs = gql`
     creationDate: String
     updateDate: String
     completionDate: String
+    userId: String
   }
 
   type DeletionResult {
@@ -25,8 +33,9 @@ const typeDefs = gql`
   }
 
   type Query {
-    tasks: [Task]
+    tasks(userId: String): [Task]
     task(_id: String): Task
+    account(_id: String): Account
   }
 
   type Mutation {
@@ -44,12 +53,15 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    tasks: async () => {
-      return await getTasks();
+    tasks: async (root, { userId }) => {
+      return await getTasksForUser(userId);
     },
     task: async (root, { _id }) => {
       return await getTask(_id);
     },
+    account: async (root, { _id }) => {
+      return await getAccount(_id);
+    }
   },
 
   Mutation: {
@@ -58,6 +70,12 @@ const resolvers = {
     },
     deleteTask: async (root, args, content, info) => {
       return await deleteTask(args);
+    }
+  },
+
+  Account: {
+    async tasks(account) {
+      return await getTasksForUser(account._id);
     }
   }
 };

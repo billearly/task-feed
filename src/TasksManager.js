@@ -1,14 +1,28 @@
 const { ApolloError } = require('apollo-server');
 const { 
-    getTasks,
+    getAccount,
+    getTasksForUser,
     getTask,
     writeTask,
     deleteTask
 } = require('./TasksSource');
 
 module.exports = {
-    getTasks: async () => {
-        const tasks = await getTasks();
+    getAccount: async (_id) => {
+        if (!_id) {
+            throw new ApolloError('ID not specified');
+        }
+
+        const account = await getAccount(_id);
+        return account;
+    },
+
+    getTasksForUser: async (userId) => {
+        if (!userId) {
+            throw new ApolloError('User not specified');
+        }
+
+        const tasks = await getTasksForUser(userId.toString());
         return tasks.map(objectIdToString);
     },
 
