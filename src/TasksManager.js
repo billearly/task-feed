@@ -14,6 +14,11 @@ module.exports = {
         }
 
         const account = await getAccount(_id);
+
+        if (!account) {
+            throw new ApolloError(`No account found for ID ${_id}`);
+        }
+
         return account;
     },
 
