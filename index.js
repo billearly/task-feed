@@ -1,4 +1,6 @@
-const port = parseInt(process.env.PORT, 10) || 4000;
+require('dotenv').config();
+
+const port = parseInt(process.env.PORT, 10);
 
 const { ApolloServer, gql } = require('apollo-server');
 const { 
