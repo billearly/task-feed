@@ -2,7 +2,8 @@ require('dotenv').config();
 
 const port = parseInt(process.env.PORT, 10);
 
-const { ApolloServer, gql } = require('apollo-server');
+// Apollo Server
+const { ApolloServer, gql } = require('apollo-server-express');
 const { 
   getTasks,
   getTask,
@@ -64,8 +65,14 @@ const resolvers = {
   }
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+// Express
+const express = require('express');
+const app = express();
 
-server.listen({ port: port }).then(({ url }) => {
-  console.log(`Server ready at ${url}`);
+// Server
+const server = new ApolloServer({ typeDefs, resolvers });
+server.applyMiddleware({ app });
+
+app.listen({ port }, () => {
+  console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`)
 });
